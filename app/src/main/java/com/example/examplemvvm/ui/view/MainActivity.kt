@@ -7,7 +7,14 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.example.examplemvvm.databinding.ActivityMainBinding
 import com.example.examplemvvm.ui.viewmodel.QuoteViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+//La idea de la inyeccion de dependencias es que en una clase no exista ninguna instancia de otro objeto,
+//todo lo debe manejar DaggerHilt en este caso
+
+//Con solo poner la etiqueta  @AndroidEntryPoint en una clase Activity
+// ya tenemos configurada la inyeccion de dependencias.
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityMainBinding

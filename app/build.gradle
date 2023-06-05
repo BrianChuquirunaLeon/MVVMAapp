@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+// kotlin-kapt a traves de las anotaciones que vamos a usar en hilt, nos genera el codigo por detras
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -24,6 +27,7 @@ android {
         }
     }
     compileOptions {
+        //es necesario tener esta version de java 8 para usar Dagger Hilt
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -58,6 +62,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
-
-
+    //dagger hilt aris: 2.35 - creo que es la version estabale
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 }

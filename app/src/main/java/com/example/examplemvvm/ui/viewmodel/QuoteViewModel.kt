@@ -7,13 +7,23 @@ import com.example.examplemvvm.data.model.QuoteModel
 import com.example.examplemvvm.data.model.QuoteProvider
 import com.example.examplemvvm.domain.GetQuotesUseCase
 import com.example.examplemvvm.domain.GetRandomQuoteUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class QuoteViewModel : ViewModel(){
+//En el caso de la clas clases viewmodel necesitamos poner la etiqueta @HiltViewModel arriba de la clase,
+// y ademas poner la etiqueta @Inject constructor.
+@HiltViewModel
+class QuoteViewModel @Inject constructor(
+    private val getQuotesUseCase: GetQuotesUseCase,
+    private val getRandomQuoteUseCase : GetRandomQuoteUseCase
+): ViewModel(){
     val quoteModel = MutableLiveData<QuoteModel>()
     val isLoading = MutableLiveData<Boolean>()
-    var getQuotesUseCase = GetQuotesUseCase()//instanciamos la clase GetQuotesUseCase
-    var getRandomQuoteUseCase = GetRandomQuoteUseCase()//instanciamos la clase GetRandomQuoteUseCase
+
+    //Vamos a injectar estas 2 Clases, por lo cual ya no las instanciaremos de esta forma
+//    var getQuotesUseCase = GetQuotesUseCase()//instanciamos la clase GetQuotesUseCase
+//    var getRandomQuoteUseCase = GetRandomQuoteUseCase()//instanciamos la clase GetRandomQuoteUseCase
 
     // Hacemos la llamada a nuestro caso de uso para que nos devuelva todas las Quotes y almacene
     // en memoria esas Quotes que recibe.

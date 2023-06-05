@@ -2,9 +2,15 @@ package com.example.examplemvvm.domain
 
 import com.example.examplemvvm.data.QuoteRepository
 import com.example.examplemvvm.data.model.QuoteModel
+import javax.inject.Inject
 
-class GetQuotesUseCase {
-    private val repository = QuoteRepository()
+//Las clases que NO son viewmodel ni activitys, simplemente se prepara la inyeccion de dependencias poniendo
+// @Inject constructor().
+class GetQuotesUseCase @Inject constructor(
+    private val repository : QuoteRepository //ya que lo estamos inyectando no instanciamos la clase, solo le decimos de que tipo es
+) {
+    //ya no instanciamos la clase QuoteRepository() aca, sino que lo pasaremos por el constructor con DaggerHilt
+//    private val repository = QuoteRepository()
 
 //    Esto hace lo mismo que lo que esta abajo, solamente es otra sintaxis
 //    suspend operator fun invoke():List<QuoteModel>?{
