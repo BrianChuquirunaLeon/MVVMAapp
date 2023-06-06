@@ -29,7 +29,7 @@ class GetQuotesUseCase @Inject constructor(
             repository.inserQuotes(quotes.map {it.toDatabase()} )
             quotes//se devuelve esto en caso de que se verdadero, siempre se devulve la ultima linea de codigo
         }else{
-            repository.getAllQuotesFromDatabase()//se devuelve esto en caso de que sea falso
+            repository.getAllQuotesFromDatabase()//se  ejecuta en caso la API no devuelva nada, por lo tanto lo que hariamos seria devolver los valores que tenemos en la BD
         }
     }
 //Para llamar a esta funcion invoke(), no esta necesario llamar al metodo luego de
