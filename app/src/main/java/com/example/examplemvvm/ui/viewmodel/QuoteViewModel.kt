@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examplemvvm.data.model.QuoteModel
-import com.example.examplemvvm.data.model.QuoteProvider
 import com.example.examplemvvm.domain.GetQuotesUseCase
 import com.example.examplemvvm.domain.GetRandomQuoteUseCase
+import com.example.examplemvvm.domain.model.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class QuoteViewModel @Inject constructor(
     private val getQuotesUseCase: GetQuotesUseCase,
     private val getRandomQuoteUseCase : GetRandomQuoteUseCase
 ): ViewModel(){
-    val quoteModel = MutableLiveData<QuoteModel>()
+    val quoteModel = MutableLiveData<Quote>()
     val isLoading = MutableLiveData<Boolean>()
 
     //Vamos a injectar estas 2 Clases, por lo cual ya no las instanciaremos de esta forma
@@ -33,7 +33,7 @@ class QuoteViewModel @Inject constructor(
         // esto se gestiona automaticamente por la libreria, es por eso que ejecutarmos la Coroutine dentro del viewModelScope.
         viewModelScope.launch {
             isLoading.postValue(true)//mostramos la barra de carga mientras hacemos la llamada al servidor
-            val result:List<QuoteModel>? = getQuotesUseCase()// ejecutamos el metodo invoke() de la clase GetQuotesUseCase
+            val result:List<Quote>? = getQuotesUseCase()// ejecutamos el metodo invoke() de la clase GetQuotesUseCase
             if (!result.isNullOrEmpty()){
                 quoteModel.postValue(result[0])
                 isLoading.postValue(false)//ocultamos la barra de carga despues de la llamada al servidor
@@ -44,14 +44,13 @@ class QuoteViewModel @Inject constructor(
     fun randomQuote(){
 //        val currenQuote = QuoteProvider.random()
 //        quoteModel.postValue(currenQuote)
-
-        isLoading.postValue(true)//mostramos la barra de carga mientras hacemos la llamada al servidor
-        val quote:QuoteModel? = getRandomQuoteUseCase()// ejecutamos el metodo invoke() de la clase GetRandomQuoteUseCase
-        if(quote!=null){
-            quoteModel.postValue(quote)
+        viewModelScope.launch {
+            isLoading.postValue(true)//mostramos la barra de carga mientras hacemos la llamada al servidor
+            val quote:Quote? = getRandomQuoteUseCase()// ejecutamos el metodo invoke() de la clase GetRandomQuoteUseCase
+            if(quote!=null){
+                quoteModel.postValue(quote)
+            }
+            isLoading.postValue(false)//ocultamos la barra de carga despues de la llamada al servidor
         }
-        isLoading.postValue(false)//ocultamos la barra de carga despues de la llamada al servidor
     }
-
-
 }
